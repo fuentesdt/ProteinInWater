@@ -1,1 +1,21 @@
 http://ringo.ams.sunysb.edu/index.php/MD_Simulation:_Protein_in_Water
+
+
+pdb2gmxgcc-4.6.3 -f 1UBQ.pdb -o protein.gro -p topol.top -ignh -v
+editconfgcc-4.6.3 -f protein.gro -o protein_box.gro -bt triclinic -d 1.2 -c
+genboxgcc-4.6.3 -cp protein_box.gro -cs spc216.gro -o protein_sol.gro -p topol.top
+gromppgcc-4.6.3 -f genion.mdp -c protein_sol.gro -p topol.top -o genion_input.tpr
+geniongcc-4.6.3 -s genion_input.tpr -p topol.top -o protein_sol_nacl.gro -pname NA -pq 1 -nname CL -nq -1 -conc 0.1 -neutral
+gromppgcc-4.6.3 -f ubq_min.mdp -c protein_sol_nacl.gro -p topol.top -o input_min.tpr
+mdrungcc-4.6.3 -v -s input_min.tpr -deffnm ubiquitin_min -v
+g_energygcc-4.6.3 -f ubiquitin_min.edr -o energy.xvg
+gromppgcc-4.6.3 -f ubq_nvt.mdp -c ubiquitin_min.gro -p topol.top -o input_nvt.tpr
+mdrungcc-4.6.3 -s input_nvt.tpr -deffnm ubiquitin_nvt -v
+gromppgcc-4.6.3 -f ubq_npt.mdp -c ubiquitin_nvt.gro -t ubiquitin_nvt.cpt -p topol.top -o input_npt.tpr
+mdrungcc-4.6.3 -s input_npt.tpr -deffnm ubiquitin_npt -v
+
+g_energygcc-4.6.3  -f ubiquitin_npt.edr -o energy.xvg    22
+
+
+gromppgcc-4.6.3  -f ubq_md.mdp -c ubiquitin_npt.gro -t ubiquitin_npt.cpt -p topol.top -o input_md.tpr
+mdrungcc-4.6.3  -s input_md.tpr -deffnm ubiquitin_md

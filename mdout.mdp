@@ -2,7 +2,7 @@
 ;	File 'mdout.mdp' was generated
 ;	By user: onbekend (0)
 ;	On host: onbekend
-;	At date: Sat Jun 27 18:19:07 2015
+;	At date: Sat Jun 27 18:43:49 2015
 ;
 
 ; VARIOUS PREPROCESSING OPTIONS
@@ -17,7 +17,7 @@ integrator               = md
 ; Start time and timestep in ps
 tinit                    = 0
 dt                       = 0.002
-nsteps                   = 25000
+nsteps                   = 250000
 ; For exact run continuation or redoing part of a run
 init_step                = 0
 ; Part index is updated automatically on checkpointing (keeps files separate)
@@ -51,15 +51,15 @@ rtpi                     = 0.05
 
 ; OUTPUT CONTROL OPTIONS
 ; Output frequency for coords (x), velocities (v) and forces (f)
-nstxout                  = 25000
-nstvout                  = 25000
-nstfout                  = 25000
+nstxout                  = 250000
+nstvout                  = 250000
+nstfout                  = 250000
 ; Output frequency for energies to log file and energy file
 nstlog                   = 100
 nstcalcenergy            = -1
-nstenergy                = 100
+nstenergy                = 500
 ; Output frequency and precision for .xtc file
-nstxtcout                = 100
+nstxtcout                = 500
 xtc_precision            = 1000
 ; This selects the subset of atoms for the .xtc file. You can
 ; select multiple groups. By default all atoms will be written.
@@ -139,7 +139,7 @@ sa_surface_tension       = -1
 
 ; OPTIONS FOR WEAK COUPLING ALGORITHMS
 ; Temperature coupling  
-tcoupl                   = berendsen
+tcoupl                   = nose-hoover
 nsttcouple               = -1
 nh-chain-length          = 10
 ; Groups to couple separately
@@ -148,13 +148,13 @@ tc_grps                  = Protein    Non-Protein
 tau_t                    = 0.1        0.1
 ref_t                    = 310        310
 ; Pressure coupling     
-Pcoupl                   = No
-Pcoupltype               = Isotropic
+pcoupl                   = parrinello-rahman
+pcoupltype               = isotropic
 nstpcouple               = -1
 ; Time constant (ps), compressibility (1/bar) and reference P (bar)
-tau-p                    = 1
-compressibility          = 
-ref-p                    = 
+tau_p                    = 2.0
+compressibility          = 4.5e-5
+ref_p                    = 1.0
 ; Scaling of reference coordinates, No, All or COM
 refcoord_scaling         = No
 ; Random seed for Andersen thermostat
@@ -199,16 +199,16 @@ annealing_time           =
 annealing_temp           = 
 
 ; GENERATE VELOCITIES FOR STARTUP RUN
-gen_vel                  = yes
-gen_temp                 = 310
-gen_seed                 = -1
+gen_vel                  = no
+gen-temp                 = 300
+gen-seed                 = 173529
 
 ; OPTIONS FOR BONDS    
 constraints              = all-bonds
 ; Type of constraint algorithm
 constraint_algorithm     = LINCS
 ; Do not constrain the start configuration
-continuation             = no
+continuation             = yes
 ; Use successive overrelaxation to reduce the number of shake iterations
 Shake-SOR                = no
 ; Relative tolerance of shake
