@@ -9,11 +9,12 @@ gmx grompp    -f genion.mdp -c protein_sol.gro -p topol.top -o genion_input.tpr
 echo 13 | gmx genion    -s genion_input.tpr -p topol.top -o protein_sol_nacl.gro -pname NA -pq 1 -nname CL -nq -1 -conc 0.1 -neutral
 gmx grompp    -f ubq_min.mdp -c protein_sol_nacl.gro -p topol.top -o input_min.tpr
 gmx mdrun     -v -s input_min.tpr -deffnm ubiquitin_min 
-echo 10 0 | gmx energy  -f ubiquitin_min.edr -o energy.xvg
+echo 13 0 | gmx energy  -f ubiquitin_min.edr -o energy.xvg
 gmx grompp    -f ubq_nvt.mdp -c ubiquitin_min.gro -p topol.top -o input_nvt.tpr
 gmx mdrun     -s input_nvt.tpr -deffnm ubiquitin_nvt -v
 gmx grompp    -f ubq_npt.mdp -c ubiquitin_nvt.gro -t ubiquitin_nvt.cpt -p topol.top -o input_npt.tpr
 gmx mdrun     -s input_npt.tpr -deffnm ubiquitin_npt -v
-echo 22 | gmx energy    -f ubiquitin_npt.edr -o energy.xvg    
+echo 14 0 | gmx energy    -f ubiquitin_npt.edr -o temperature.xvg    
+echo 16 0 | gmx energy    -f ubiquitin_npt.edr -o pressure.xvg    
 gmx grompp    -f ubq_md.mdp -c ubiquitin_npt.gro -t ubiquitin_npt.cpt -p topol.top -o input_md.tpr
-gmx mdrun     -s input_md.tpr -deffnm ubiquitin_md
+gmx mdrun     -s input_md.tpr -deffnm ubiquitin_md -v
